@@ -1,0 +1,20 @@
+db:
+  image: kartoza/postgis:9.4-2.1
+  environment:
+    - USERNAME=docker
+    - PASS=docker
+
+qgisdesktop:
+  image: kartoza/qgis-desktop:2.14
+  hostname: qgis-server
+  volumes:
+    # Wherever you want to mount your data from
+    - ./gis:/gis
+    # Unix socket for X11
+    - /tmp/.X11-unix:/tmp/.X11-unix
+  links:
+    - db:db
+  environment:
+    - DISPLAY=unix:1
+  command: /usr/bin/qgis
+
